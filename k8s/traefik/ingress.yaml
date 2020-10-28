@@ -1,0 +1,32 @@
+kind: Middleware
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: socket-replaceprefix
+spec:
+  replacePath:
+    path: /
+---
+kind: IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: simpleingressroute
+  namespace: default
+spec:
+  entryPoints:
+    - websocket
+  routes:
+  - match: Host(`tonytran.test`)
+  # - match: PathPrefix(`/wsk`)
+    kind: Rule
+    services:
+    - name: laratchet-service
+      port: 3909
+      sticky:
+        cookie:
+          httpOnly: true
+          name: io
+          secure: true
+          sameSite: lax
+      strategy: RoundRobin
+    middlewares:
+    - name: socket-replaceprefix

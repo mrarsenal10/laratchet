@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laratchet-deployment
+  labels:
+    app: laratchet
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: laratchet
+  template:
+    metadata:
+      labels:
+        app: laratchet
+    spec:
+      containers:
+      - name: laratchet
+        image: anhtpt92/laravel_websocket:latest
+        ports:
+        - containerPort: 9090
+          name: websocket
+        - containerPort: 80
+          name: http
