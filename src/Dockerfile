@@ -47,15 +47,15 @@ RUN docker-php-ext-install \
     zip
 
 # 5. Composer.
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # 6. We need a user with the same UID/GID as the host user
 # so when we execute CLI commands, all the host file's permissions and ownership remain intact.
 # Otherwise commands from inside the container would create root-owned files and directories.
-ARG uid
-RUN useradd -G www-data,root -u 1000 -d /home/devuser devuser
-RUN mkdir -p /home/devuser/.composer && \
-    chown -R devuser:devuser /home/devuser
+# ARG uid
+# RUN useradd -G www-data,root -u 1000 -d /home/devuser devuser
+# RUN mkdir -p /home/devuser/.composer && \
+#     chown -R devuser:devuser /home/devuser
 
 #7 Install phpiredis extension
 RUN rm -rf phpiredis \
